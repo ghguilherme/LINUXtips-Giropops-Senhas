@@ -1,0 +1,24 @@
+# LINUXtips-Giropops-Senhas
+Desafio Dia 2 do Descomplicando Docker
+
+## Como executar:
+
+Definir a variável de ambiente com o nome do teu usuário no dockerhub
+```
+export USER_DOCKER_HUB=SEU_USUARIO_NO_DOCKER_HUB
+```
+
+Efetuar o build da imagem
+```
+docker image build -t $USER_DOCKER_HUB/linuxtips-giropops-senhas:1.0 .
+```
+
+Subir o redis
+```
+docker container run --rm -d -p 6379:6379 --name redis redis
+```
+
+Iniciar o teu container
+```
+docker container run --rm -d -p 5000:5000 --env REDIS_HOST=$( docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis ) --name giropops-senhas $USER_DOCKER_HUB/linuxtips-giropops-senhas:1.0
+```
